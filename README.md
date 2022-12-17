@@ -64,6 +64,8 @@ cargo run
 
 ## Ссылки по теме
 
-- [Creating a Web Service API Using Rust Rocket](https://betterprogramming.pub/creating-a-web-server-using-rust-rocket-1e4939e582df) by Joseph Talon
-- [Building web apps with Rust using the Rocket framework](https://blog.logrocket.com/rust-web-apps-using-rocket-framework/) by Ebenezer Don
+- [Creating a Web Service API Using Rust Rocket](https://betterprogramming.pub/creating-a-web-server-using-rust-rocket-1e4939e582df) by Joseph Talon. Свежая статья, в которой используется Rocket 0.5.0-rc.2. Поскольку, по cargo установил 0.4.11, пример не собрался - не был найден атрибут #[launch]
+- [Building web apps with Rust using the Rocket framework](https://blog.logrocket.com/rust-web-apps-using-rocket-framework/) by Ebenezer Don. В примере кода использовался Rocket 0.4.5 близкий к тому, что устанавливает Cargo
 - [SergioBenitez/Rocket](https://github.com/SergioBenitez/Rocket)
+
+Следует заметить, что Rocket имеет _build-in_ поддержку баз данных, таких как Postgres, MySQL, SQLite, Redis, Memcache. См. [официальную документацию](https://rocket.rs/v0.4/guide/state/#databases).
