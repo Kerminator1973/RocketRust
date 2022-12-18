@@ -9,3 +9,13 @@
 _Crates_ - это названия packages в Rust. Например: rocket, tauri.
 
 Удалить зависимость можно командой: `cargo remove [crate]` (начиная с Rust 1.62).
+
+## Clippy
+
+Clippy - это набор из 550 правил оформления кода (Linters). Запустить команду можно так:
+
+``` shell
+cargo clippy
+```
+
+Дополнительная информация в [официальной документации](https://github.com/rust-lang/rust-clippy)
