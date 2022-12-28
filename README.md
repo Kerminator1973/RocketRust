@@ -60,7 +60,7 @@ fn main() {
 
 Сборка и запуск приложения осуществляются в Command Prompt (не PowerShell) следующими командами:
 
-`` shell
+``` shell
 cd .\rust_web_server\
 cargo build --release
 cargo run
@@ -77,3 +77,8 @@ cargo run
 - [Building web apps with Rust using the Rocket framework](https://blog.logrocket.com/rust-web-apps-using-rocket-framework/) by Ebenezer Don. В примере кода использовался Rocket 0.4.5 близкий к тому, что устанавливает Cargo
 
 Следует заметить, что Rocket имеет _build-in_ поддержку баз данных, таких как Postgres, MySQL, SQLite, Redis, Memcache. См. [официальную документацию](https://rocket.rs/v0.4/guide/state/#databases).
+
+## Популярные crates
+
+- [Tokio](https://crates.io/crates/tokio) - управляемая по сообщениям (event-driven), не блокирующая платформа ввода/вывода (non-blocking I/O platform) для разработки асинхронных приложений ввода/вывода (back-end)
+- [Serde](https://crates.io/crates/serde) - framework для сериализации/десериализации данных, например, JSON
