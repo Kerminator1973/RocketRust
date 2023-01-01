@@ -30,4 +30,20 @@ cargo create-tauri-app
 cargo build --release
 ```
 
-Сборка приложения может занять больше минуты. В результате компиляции, на платформе Windows создаётся исполняемый файл размером ~5 мегабайт, который можно запустить на исполнение.
+Для сборки Tauri-приложения требуется загрузить 200+ crates (вспомогательных библиотек). Сборка приложения может занять больше минуты. В результате компиляции, на платформе Windows создаётся исполняемый файл размером ~5 мегабайт, который можно запустить на исполнение.
+
+Для сборки приложения в Ubuntu 22.04 необходимо предварительно разрешить в Software & Updates, в разделе "Ubuntu Software" следующие источники данных: "Canonical-supported free and open-source software (main)" и "Source code". После этого следует установить [pre-requisites](https://tauri.app/v1/guides/getting-started/prerequisites):
+
+``` shell
+sudo apt update
+sudo apt install libwebkit2gtk-4.0-dev \
+    build-essential \
+    curl \
+    wget \
+    libssl-dev \
+    libgtk-3-dev \
+    libayatana-appindicator3-dev \
+    librsvg2-dev
+```
+
+Исполняемый файл занимает около 11 Мбайт и запускается менее, чем за секунду.
