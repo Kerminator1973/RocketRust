@@ -107,3 +107,21 @@ window.addEventListener("DOMContentLoaded", () => {
 Почитать больше о командах можно в [официальной документации по Tauri](https://tauri.app/v1/guides/features/command).
 
 Статья о создании приложения Tauri на React: [How To Create Tauri Desktop Applications Using React](https://medium.com/geekculture/how-to-create-tauri-desktop-applications-using-react-8541e42b1f22) by Mahbub Zaman.
+
+Более углублённая статья от японского разработчика - [Trying to the Tauri GUI on Rust : 3. Communicate with js (^-^](https://medium.com/@marm.nakamura/trying-to-tauri-on-rust-3-communicate-with-js-d56390116e1f) by mar-m. nakamura.
+
+## Вызвать JavaScript-функцию из Rust-кода
+
+Отправная точка для поиска: "tauri call js from rust". Пример кода, найденный в интернет, но который я ещё не проверял:
+
+``` rs
+.on_menu_event(|event| {
+    let window = event.window();
+    match event.menu_item_id() {
+        "trigger" => {
+            window.emit();
+        }
+        _ => {}
+    }
+})
+```
