@@ -9,7 +9,11 @@
 - возможность выполнять вычислительно эффективный нативый код (скомпилированный из Rust с использованием LLVM)
 - пользовательский интерфейс можно разрабатывать удобным для web-программиста образом, используя: HTML/CSS/JS, SvelteKit, Next.js, Vite, и т.д.
 
-Основной недостаток: время сборки проекта может быть значимым (минуты).
+Недостатки: 
+
+- время сборки проекта может быть значимым (минуты)
+- инструментальные средства для работы с Rust пока ещё не такие зрелые, как для других языков программирования (C#, JavaScript)
+- обмен данными между web-приложением и нативным кодом скомпилированным из Rust осуществляется через IPC, т.е. расходы на коммуникацию достаточно существенные
 
 ## Начало работы с Rust
 
@@ -50,3 +54,56 @@ sudo apt install libwebkit2gtk-4.0-dev \
 ```
 
 Исполняемый файл занимает около 11 Мбайт и запускается менее, чем за секунду.
+
+## Вызов команд Rust из web-приложения
+
+В главном файле Rust-приложения ("main.rs") может быть определена команда, вызываемая из кода web-приложения. В демонстрационном приложении такая команда выглядит так:
+
+``` rs
+#[tauri::command]
+fn greet(name: &str) -> String {
+    format!("Hello, {}! You've been greeted from Rust!", name)
+}
+```
+
+Входной параметр функции - строковый срез (&str), а возвращаемое значение имеет тип "строка" (String). В соответствии с синтаксисом Rust, возвращено будет строковое значение, являющееся результатом вызова format!().
+
+Регистрация команды выглядит следюущим образом:
+
+``` rs
+fn main() {
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![greet])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
+```
+
+В приведённом выше коде создаётся контейнер комманд, в который добавляется обработчик - ранее определённая функция greet(). Если web-приложение вызовет эту команду, то Tauri создаст контекст выполнения команды и вызовет функцию greet(). В случае возникновения ошибки, в текстовую консоль (только для Debug-режима) будет выведена информация об ошибке.
+
+JavaScript код (main.js) выполняет _destructuring_ и получает из `window.__TAURI__.tauri` функциональный объект _invoke_, который можно использовать для вызова функции на Rust:
+
+``` js
+const { invoke } = window.__TAURI__.tauri;
+
+let greetInputEl;
+let greetMsgEl;
+
+async function greet() {
+  greetMsgEl.textContent = await invoke("greet", { name: greetInputEl.value });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  greetInputEl = document.querySelector("#greet-input");
+  greetMsgEl = document.querySelector("#greet-msg");
+  document
+    .querySelector("#greet-button")
+    .addEventListener("click", () => greet());
+});
+```
+
+В приведённом выше примере, при нажатии на кнопку с идентификатором greet-button, из поля ввода с идентификатором greet-input будет извлечено значение и добавлено в текстовую строку с идентификатором greet-msg.
+
+Почитать больше о командах можно в [официальной документации по Tauri](https://tauri.app/v1/guides/features/command).
+
+Статья о создании приложения Tauri на React: [How To Create Tauri Desktop Applications Using React](https://medium.com/geekculture/how-to-create-tauri-desktop-applications-using-react-8541e42b1f22) by Mahbub Zaman.
