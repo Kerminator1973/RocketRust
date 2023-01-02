@@ -106,8 +106,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 Почитать больше о командах можно в [официальной документации по Tauri](https://tauri.app/v1/guides/features/command).
 
-Статья о создании приложения Tauri на React: [How To Create Tauri Desktop Applications Using React](https://medium.com/geekculture/how-to-create-tauri-desktop-applications-using-react-8541e42b1f22) by Mahbub Zaman.
-
 Более углублённая статья от японского разработчика - [Trying to the Tauri GUI on Rust : 3. Communicate with js (^-^](https://medium.com/@marm.nakamura/trying-to-tauri-on-rust-3-communicate-with-js-d56390116e1f) by mar-m. nakamura.
 
 ## Вызвать JavaScript-функцию из Rust-кода
@@ -125,3 +123,36 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 })
 ```
+
+## Создание приложения Tauri + React
+
+Статья о создании приложения Tauri на React: [How To Create Tauri Desktop Applications Using React](https://medium.com/geekculture/how-to-create-tauri-desktop-applications-using-react-8541e42b1f22) by Mahbub Zaman.
+
+Предварительные действия:
+
+``` shell
+cargo install tauri-cli
+cargo tauri --help
+```
+
+Создать приложение можно используя `yarn`, альтернативный менеджер пакетов, считающийся более эффективным, чем npm. Сначала необходимо создать папку для решения, а потом уже запустить команду генерации шаблонного кода:
+
+``` shell
+yarn create tauri-app
+```
+
+Команда загружает генератор шаблонов из репозитария и запускает его. Когда приложение запрашивает какой менджер проектов использовать, выбор cargo позволит лишь добавить VanillaJS-проекты. В случае выбора npm/yarn предоставляются варианты с использованием различных библиотек и frameworks. Один из вариантов: react-ts.
+
+После генерации кода, предлагается выполнить следующие команды:
+
+``` shell
+cd tauri-app
+yarn
+yarn tauri dev
+```
+
+Команда `yarn` загружает зависимости проекта. На этом этапе можно "поймать" ошибки, связанные с инструментальными средствами. Например, на моей машине была установлена устаревшая версия Node.js (14.17.5). Команда `yarn tauri dev` выполняет сборку проекта.
+
+Используемый Front-End - действительно React с использованием TypeScript и [Vite](https://vitejs.dev/).
+
+Чтобы выполнить сборку для выпуска продукта следует использовать команду `yarn tauri build`, однако, эта команда не будет выполнена если не поменять идентификатор приложения в файле "tauri.config.json", в ветке tauri -> bundle -> identifier со значения "com.tauri.dev" на "com.tauri.app". Размер приложения "по умолчанию" - 7,5 Мб. Запускается мгновенно. Кроме исполняемого файла скрипт собрал и msi-файл (для Windows), используя систему сборки WiX.
