@@ -84,3 +84,16 @@ cargo run
 
 - [Tokio](https://crates.io/crates/tokio) - управляемая по сообщениям (event-driven), не блокирующая платформа ввода/вывода (non-blocking I/O platform) для разработки асинхронных приложений ввода/вывода (back-end)
 - [Serde](https://crates.io/crates/serde) - framework для сериализации/десериализации данных, например, JSON
+
+## Использование Rust для разработки прошивок микроконтроллеров
+
+Ключевая статья: [Rust on an STM32 microcontroller](https://medium.com/digitalfrontiers/rust-on-a-stm32-microcontroller-90fac16f6342) by Marco Amann.
+
+Установка кросс-компиляторов для Rust осуществляется таким образом:
+
+``` shell
+rustup update
+rustup component add llvm-tools-preview
+rustup target add thumbv7em-none-eabihf
+cargo install cargo-binutils cargo-embed cargo-flash cargo-expand
+```
