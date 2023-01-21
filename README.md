@@ -80,6 +80,8 @@ cargo run
 
 Следует заметить, что Rocket имеет _build-in_ поддержку баз данных, таких как Postgres, MySQL, SQLite, Redis, Memcache. См. [официальную документацию](https://rocket.rs/v0.4/guide/state/#databases).
 
+Rust подходит для разработки ПО для микроконтроллеров. Об этом, в частности, написана статья [Rust on an STM32 microcontroller](https://medium.com/digitalfrontiers/rust-on-a-stm32-microcontroller-90fac16f6342) by Marco Amann.
+
 ## Популярные crates
 
 - [Tokio](https://crates.io/crates/tokio) - управляемая по сообщениям (event-driven), не блокирующая платформа ввода/вывода (non-blocking I/O platform) для разработки асинхронных приложений ввода/вывода (back-end)
