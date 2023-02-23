@@ -111,3 +111,7 @@ rustup component add llvm-tools-preview
 rustup target add thumbv7em-none-eabihf
 cargo install cargo-binutils cargo-embed cargo-flash cargo-expand
 ```
+
+## Code covegare in Rust
+
+Рекомендуется для ознакомления автор - [Dotan Nahum](https://jondot.medium.com/). Начать исследование темы покрытия кода тестами можно со статьи [How to do code coverage in Rust](https://jondot.medium.com/how-to-do-code-coverage-in-rust-9548e0fbacce).
