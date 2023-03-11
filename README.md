@@ -90,7 +90,7 @@ cargo run
 - [Building web apps with Rust using the Rocket framework](https://blog.logrocket.com/rust-web-apps-using-rocket-framework/) by Ebenezer Don. В примере кода использовался Rocket 0.4.5 близкий к тому, что устанавливает Cargo
 - [Creating a Rust Web App with Rocket and Diesel](https://medium.com/itnext/creating-a-rust-web-app-with-rocket-and-diesel-58f5f6cacd27) by Raimi Karim. [Diesel](https://diesel.rs/) - это ORM и Query Builder для Rust
 
-Следует заметить, что Rocket имеет _build-in_ поддержку баз данных, таких как Postgres, MySQL, SQLite, Redis, Memcache. См. [официальную документацию](https://rocket.rs/v0.4/guide/state/#databases).
+Следует заметить, что Rocket имеет _build-in_ поддержку баз данных, таких как Postgres, MySQL, SQLite, Redis, Memcache. См. [официальную документацию](https://rocket.rs/v0.4/guide/state/#databases). В качестве облачной базы данных предлагается использовать [SurrealDB](https://surrealdb.com/docs/integration/libraries/rust)
 
 Rust подходит для разработки ПО для микроконтроллеров. Об этом, в частности, написана статья [Rust on an STM32 microcontroller](https://medium.com/digitalfrontiers/rust-on-a-stm32-microcontroller-90fac16f6342) by Marco Amann.
 
