@@ -114,6 +114,8 @@ rustup target add thumbv7em-none-eabihf
 cargo install cargo-binutils cargo-embed cargo-flash cargo-expand
 ```
 
+Также можно почитать о пректе [Slint](https://slint-ui.com/) - это Framework для разработки GUI-приложений для Embedded-устройств. Бывшие разработчики Qt из Trolltech сделали новый Framework, который работает даже на микроконтроллерах с 256 Кб ОЗУ.
+
 ## Code covegare in Rust
 
 Рекомендуется для ознакомления автор - [Dotan Nahum](https://jondot.medium.com/). Начать исследование темы покрытия кода тестами можно со статьи [How to do code coverage in Rust](https://jondot.medium.com/how-to-do-code-coverage-in-rust-9548e0fbacce).
