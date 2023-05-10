@@ -101,6 +101,10 @@ Rust подходит для разработки ПО для микроконт
 - [Tokio](https://crates.io/crates/tokio) - управляемая по сообщениям (event-driven), не блокирующая платформа ввода/вывода (non-blocking I/O platform) для разработки асинхронных приложений ввода/вывода (back-end)
 - [Serde](https://crates.io/crates/serde) - framework для сериализации/десериализации данных, например, JSON
 
+## Альтернативные варианты разработки Desktop-приложений
+
+Один из продвигаемых на Medium фреймворков называется [Yew](https://yew.rs/). Рекомендуется к прочтению статья [Exploring Yew, the rust-based frontend framework as a React Developer](https://dev.to/hackmamba/exploring-yew-the-rust-based-frontend-framework-as-a-react-developer-52l) by Demola Malomo.
+
 ## Использование Rust для разработки прошивок микроконтроллеров
 
 Ключевая статья: [Rust on an STM32 microcontroller](https://medium.com/digitalfrontiers/rust-on-a-stm32-microcontroller-90fac16f6342) by Marco Amann.
