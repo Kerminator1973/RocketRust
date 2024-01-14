@@ -107,6 +107,8 @@ Rust подходит для разработки ПО для микроконт
 
 Один из продвигаемых на Medium фреймворков называется [Yew](https://yew.rs/). Рекомендуется к прочтению статья [Exploring Yew, the rust-based frontend framework as a React Developer](https://dev.to/hackmamba/exploring-yew-the-rust-based-frontend-framework-as-a-react-developer-52l) by Demola Malomo.
 
+[Slint](https://slint.dev/) - ещё один Framework для разработки Desktop-приложений на Rust.
+
 ## Использование Rust для разработки прошивок микроконтроллеров
 
 Ключевая статья: [Rust on an STM32 microcontroller](https://medium.com/digitalfrontiers/rust-on-a-stm32-microcontroller-90fac16f6342) by Marco Amann.
