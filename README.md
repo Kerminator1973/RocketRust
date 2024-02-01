@@ -25,6 +25,8 @@ unsafe {
 assert_eq!(x, 4 * 6);
 ```
 
+Также следует отметить статью [Microsoft seeks Rust developers to rewrite core C# code](https://www.theregister.com/2024/01/31/microsoft_seeks_rust_developers/) by Richard Speed, в которой указывается, что Microsoft ищет специалистов для переписывания части инфраструктуры с C# на Rust (январь 2024 года). Требования к соискателям буквально следующие: "_guiding technical direction, design and implementation of Rust component libraries, SDKs, and re-implementation of existing global scale C# based services to Rust._"
+
 Беглый анализ Tutorial-ов позволил сделать заключение о том, что одной из наиболее популярных библиотек для разработки backend является [Rocket](https://rocket.rs/).
 
 ## Выявленные негативные аспекты
