@@ -25,7 +25,9 @@ unsafe {
 assert_eq!(x, 4 * 6);
 ```
 
-Также следует отметить статью [Microsoft seeks Rust developers to rewrite core C# code](https://www.theregister.com/2024/01/31/microsoft_seeks_rust_developers/) by Richard Speed, в которой указывается, что Microsoft ищет специалистов для переписывания части инфраструктуры с C# на Rust (январь 2024 года). Требования к соискателям буквально следующие: "_guiding technical direction, design and implementation of Rust component libraries, SDKs, and re-implementation of existing global scale C# based services to Rust._"
+Также следует отметить статью [Microsoft seeks Rust developers to rewrite core C# code](https://www.theregister.com/2024/01/31/microsoft_seeks_rust_developers/) by Richard Speed, в которой указывается, что Microsoft ищет специалистов для переписывания части инфраструктуры с C# на Rust (январь 2024 года). Требования к соискателям буквально следующие: "_guiding technical direction, design and implementation of Rust component libraries, SDKs, and re-implementation of existing global scale C# based services to Rust_". Справедливости ради, объявление о вакансии было размещено в Чехии и связано с переработкой облачных сервисов, для которых время поднятия контейнера - критически важная метрика, т.е. в данном случае, конечно же нет разговора об отказе от использования C#, но совершенно чётко указана ниша, в которой Rust значительно превосходит C#.
+
+Приблизительно в том же направлении движется Google, который [Google Spends $1 Million to Make Rust, C+ ‘Interoperable’](https://thenewstack.io/google-spends-1-million-to-make-rust-c-interoperable/) - это статья от 5 февраля 2024 года.
 
 Беглый анализ Tutorial-ов позволил сделать заключение о том, что одной из наиболее популярных библиотек для разработки backend является [Rocket](https://rocket.rs/).
 
