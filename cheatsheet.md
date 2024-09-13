@@ -8,7 +8,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 Может потребоваться добавить путь к исполняемым файлам Rust в путь к исполняемым файлам текущего пользователя. Для этого необходимо добавить в конец файла `~/.profile` следующую строку:
 
+```bash
 export PATH="$HOME/.cargo/bin:$PATH"
+```
 
 Проверить успешность установки можно командой:
 
@@ -22,6 +24,7 @@ rustc --version
 - [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) by Vadim Chugunov - для отладки кода
 - [crates](https://marketplace.visualstudio.com/items?itemName=serayuzgur.crates) by Seray Uzgur - управление зависимостями
 - [Even Better TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml) by tamasfe - синтаксическая подсветка TOML
+- [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner) by Jun Han. Ключевая особенность - он может запускать не весь проект/файл, а только его часть, что потенциально сильно помогает в изучении новых языков программирования
 
 ## Базовые синтаксические конструкции Rust
 
@@ -42,6 +45,20 @@ let age = 31;
 println!("{}", age);
 ```
 
+Внутри фигурных скобок мы можем указать позицию аргумента (позиционные аргументы), например:
+
+```rs
+let (x, y, z) = (12, 67, 5);
+println!("x = {0}, y = {1}, z = {2}", x, y, z);
+```
+
+Также могут быть использованы именованные аргументы, в том числе, с вычисляемым значением:
+
+```rs
+let (x, y, z) = (12, 67, 5);
+println!("sum = {sum}", sum = x + y + z);
+```
+
 В Rust может быть использован _string interpolation_:
 
 ```rs
@@ -50,6 +67,8 @@ println!("{hello}");
 ```
 
 В приведённом выше примере используется т.н. _строковый срез_. Аналог в C++ и C# - `span<>`.
+
+Однако, _string interpolation_ в Rust носит ограниченный характер, т.е. внутри строки фигурных скобок нельзя использовать вычисляемые выражения.
 
 Определить неизменное значение можно с помощью ключевого слово let:
 
