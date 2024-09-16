@@ -72,3 +72,34 @@ fn main() {
     println!("{second_num}");
 }
 ```
+
+## Вывод целочисленных значений в разных форматах
+
+```rs
+use std::io;
+
+fn main() {
+
+    let mut str_first = String::new();
+    io::stdin().read_line(&mut str_first).expect("Failed to get input");
+    let first_num : i32 = str_first.trim().parse().expect("Failure to parse");
+
+    let mut str_second = String::new();
+    io::stdin().read_line(&mut str_second).expect("Failed to get input");
+    let second_num : i32 = str_second.trim().parse().expect("Failure to parse");
+
+    trace_result(first_num, second_num, first_num + second_num, '+');
+    trace_result(first_num, second_num, first_num - second_num, '-');
+    trace_result(first_num, second_num, first_num * second_num, '*');
+    trace_result(first_num, second_num, first_num / second_num, '/');
+    trace_result(first_num, second_num, first_num % second_num, '%');
+}
+
+fn trace_result(first: i32, second: i32, result: i32, oper: char )
+{
+    println!("{first:#b} {oper} {second:#b} = {result:#b}");
+    println!("{first:#o} {oper} {second:#o} = {result:#o}");
+    println!("{first:#x} {oper} {second:#x} = {result:#x}");
+    println!("");
+}
+```
