@@ -26,6 +26,17 @@ rustc --version
 - [Even Better TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml) by tamasfe - синтаксическая подсветка TOML
 - [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner) by Jun Han. Ключевая особенность - он может запускать не весь проект/файл, а только его часть, что потенциально сильно помогает в изучении новых языков программирования
 
+## Создание первого проекта
+
+Создать новый проект можно командой:
+
+```shell
+cargo new [имя проекта]
+```
+
+Проект будет создан в папке, соответствующей имени проекта.
+
+
 ## Базовые синтаксические конструкции Rust
 
 Вывести сообщение в консоль можно макросами print!() и println!():
@@ -145,3 +156,5 @@ let in_num : i32 = user_input.trim().parse().expect("Failure to parse");
 - 1_000_1000
 - 0b1000_1011
 - b'A' - байт u8 с кодом ASCII-символа 'A'
+
+В Debug-режиме Rust включает контроль переполнения целочисленных переменных, но в Release-сборке такой контроль не осуществляется.

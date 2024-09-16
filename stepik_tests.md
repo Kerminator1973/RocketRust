@@ -47,3 +47,28 @@ fn main() {
 В приведённом выше примере используется замыкание (_closure_): `.map(|s| s.trim())`. Метод map() применяется к итератору по коллекции и указывает, что для каждого элемента коллекции, который будет назван `|s|`, следует применить метод `s.trim()`, для того, чтобы убрать пробелы по краям строки.
 
 Вызов `.collect::<Vec<&str>>()` трансформирует итератор в коллекцию. Часть вызова `::<Vec<&str>>` является аннотацией типа коллекции, которая будет создаваться из итератора. Тип `&str` указывает, что строковые данные заимствуются (_borrowed string data_), а не происходит передача владения.
+
+Данный алгоритм можно считать эффективно выделяющим память, т.к. когда создаётся новый массив, перед вызовом join(), это не массив строк, а массив строковых срезов, т.к. объекты фиксированной длины и минимального размера. В оптимальном случае, вызов collect() выделит только одну область памяти, для хранения всей новой коллекции.
+
+## Использование mem::swap()
+
+```rs
+use std::io;
+use std::mem;
+
+fn main() {
+
+    let mut str_first = String::new();
+    io::stdin().read_line(&mut str_first).expect("Failed to get input");
+    let mut first_num : i32 = str_first.trim().parse().expect("Failure to parse");
+
+    let mut str_second = String::new();
+    io::stdin().read_line(&mut str_second).expect("Failed to get input");
+    let mut second_num : i32 = str_second.trim().parse().expect("Failure to parse");
+
+    mem::swap(&mut first_num, &mut second_num);
+
+    println!("{first_num}");
+    println!("{second_num}");
+}
+```
