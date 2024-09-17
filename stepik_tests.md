@@ -103,3 +103,72 @@ fn trace_result(first: i32, second: i32, result: i32, oper: char )
     println!("");
 }
 ```
+
+## Ввод и вывод вещественных чисел
+
+В первой задаче осуществляется вывод с указанием точности через внешнюю переменную, см. `prec$`:
+
+```rs
+use std::io;
+
+fn main() {
+
+    let mut str_float = String::new();
+    io::stdin().read_line(&mut str_float).expect("Failed to get input");
+    let float : f64 = str_float.trim().parse().expect("Failure to parse");
+
+    let mut str_prec = String::new();
+    io::stdin().read_line(&mut str_prec).expect("Failed to get input");
+    let prec : usize = str_prec.trim().parse().expect("Failure to parse");
+
+    print!("{:.prec$}", float);
+}
+```
+
+Во второй задаче проверяется навык сложения переменных разных типов:
+
+```rs
+use std::io;
+
+fn main() {
+
+    let mut str_balance = String::new();
+    io::stdin().read_line(&mut str_balance).expect("Failed to get input");
+    let balance : f64 = str_balance.trim().parse().expect("Failure to parse");
+
+    let mut str_amount = String::new();
+    io::stdin().read_line(&mut str_amount).expect("Failed to get input");
+    let amount : u32 = str_amount.trim().parse().expect("Failure to parse");
+
+    let sum = balance + amount as f64;
+
+    print!("{:.1}", sum);
+}
+```
+
+В третьей задаче нужно было разделить вещественное число на мажорную (целочисленную) и минорную (вещественную) части. Мой код выглядел так:
+
+```rs
+use std::io;
+
+fn main() {
+
+    let mut str_value = String::new();
+    io::stdin().read_line(&mut str_value).expect("Failed to get input");
+    let value : f64 = str_value.trim().parse().expect("Failure to parse");
+
+    let int_part = value as i64;
+    println!("{int_part}");
+
+    let minor = value - int_part as f64;
+    println!("{:.3}", minor);
+}
+```
+
+ChatGPT предложил следующую оптимизацию:
+
+```rs
+// Get the integer part and fractional part
+let integer_part = value.trunc() as i64; // Use trunc() to get the integer part
+let fractional_part = value.fract(); // Use fract() to get the fractional part
+```
