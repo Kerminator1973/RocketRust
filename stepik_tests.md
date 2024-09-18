@@ -172,3 +172,20 @@ ChatGPT предложил следующую оптимизацию:
 let integer_part = value.trunc() as i64; // Use trunc() to get the integer part
 let fractional_part = value.fract(); // Use fract() to get the fractional part
 ```
+
+## Вывод вещественных чисел
+
+Цель задачи: ввести число в виде `481068.0`, вывести в экспоненциальном (научном) виде `4.81068E5`. Решение:
+
+```rs
+use std::io;
+
+fn main() {
+
+    let mut str_first = String::new();
+    io::stdin().read_line(&mut str_first).expect("Failed to get input");
+    let num : f64 = str_first.trim().parse().expect("Failure to parse");
+
+    println!("{:E}", num);
+}
+```
