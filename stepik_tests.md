@@ -229,3 +229,43 @@ fn main()
 - Потребовалось использовать конструкцию `*value` вместо `value` для записи в элемент массива
 - Чтобы получить отдельный символ строки, был получен итератор `chars()` и возвращён первый символ `next()`, после чего итератор был сдвинут на следующий символ (для конкретной задачи это не важно)
 - Чтобы собрать отдельные символы в строку, потребовалось получить итератор на массив `iter()` и объединить все элементы `collect()`
+
+# Задание "Упаковщик"
+
+Задача - ввести пять строковых значений, а затем создать из них tuple с представлением элементов в том же порядке.
+
+Моё решение:
+
+```rs
+use std::io;
+
+fn main() {
+
+    let mut values: [String; 5] = Default::default();
+
+    for i in 0..values.len() {
+        io::stdin().read_line(&mut values[i]).expect("Failed to get input");
+    }
+
+    let tup = (values[0].clone(), values[1].clone(), values[2].clone(), values[3].clone(), values[4].clone());
+    print!("{:?}", tup);
+}
+```
+
+В Rust мы не можем включить существующий элемент в другой объект просто так - будет получено сообщение об ошибке. Но мы можем клонировать элемент и включить tuple уже этот клонированный элемент.
+
+ChatGPT сообщил, что у меня есть ошибка в определении массива values: "_The Default::default() for an array of String will not work as expected because String does not implement the Default trait in a way that initializes an empty string for each element. You should initialize the array with empty strings instead_".
+
+Предложено альтернативное решение:
+
+```rs
+let mut values: [String; 5] = [
+    String::new(),
+    String::new(),
+    String::new(),
+    String::new(),
+    String::new(),
+];
+```
+
+Однако, мне кажется, что в примерах с сайта Stepik.org теряеся смысл ключевого случая использования tuple - возврат нескольких значений функции.
