@@ -277,3 +277,43 @@ fn main() {
 ```
 
 Для вывода кортежей посредством макроса println!() используется специальный формат: `{:?}`
+
+Rust позволяет выполнять итерирование по элементам tuple стандартным образом, в том числе, задавая шаг. Однако, для того, чтобы выяснить количество элементов в tuple потребуется либо написать вспомогательный макрос, который будет выполняться на этапе компиляции, либо написать trait. Пример кода:
+
+```rs
+let tup = (1, 2, 3, 4, 5, 6);
+let len = 6; // Явным образом задаём количество элементов в tuple
+
+for index in (1..len).step_by(2) {    
+    match index {
+        1 => println!("Element at index 1: {}", tup.1),
+        3 => println!("Element at index 3: {}", tup.3),
+        5 => println!("Element at index 5: {}", tup.5),
+        _ => {}
+    }
+}
+```
+
+Вот как может выглядеть реализация trait (выполняется тоже на этапе компиляции):
+
+```rs
+trait TupleLen {
+    const LEN: usize;
+}
+
+impl TupleLen for () {
+    const LEN: usize = 0;
+}
+
+impl<T1> TupleLen for (T1,) {
+    const LEN: usize = 1;
+}
+
+impl<T1, T2> TupleLen for (T1, T2) {
+    const LEN: usize = 2;
+}
+
+impl<T1, T2, T3> TupleLen for (T1, T2, T3) {
+    const LEN: usize = 3;
+}
+```
