@@ -269,3 +269,42 @@ let mut values: [String; 5] = [
 ```
 
 Однако, мне кажется, что в примерах с сайта Stepik.org теряеся смысл ключевого случая использования tuple - возврат нескольких значений функции.
+
+## Задание "Корректор"
+
+Новым, в реализации данного задания, является использование массива для ввода значений:
+
+```rs
+use std::io;
+
+fn main() {
+
+    let mut values = Vec::new();
+
+    for _ in 0..5 {
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to get input");
+        let value: f64 = input.trim().parse().expect("Failure to parse");
+        values.push(value);
+    }
+
+    let mut tup = (10.0, 5.0, -2.0, 100.0, 2000.0, 0.0);
+    tup.0 = values[0].clone();
+    tup.1 = values[1].clone();
+    tup.2 = values[2].clone();
+    tup.3 = values[3].clone();
+    tup.4 = values[4].clone();
+    print!("{}, {}, {}, {}, {}, {}", getint(tup.0), getint(tup.1), getint(tup.2), getint(tup.3), getint(tup.4), tup.5);
+}
+
+fn getint(value: f64) -> i64
+{
+    if value > 0.0 {
+        return value.floor() as i64;
+    }
+    else 
+    {
+        return value.ceil() as i64;  
+    }    
+}
+```
