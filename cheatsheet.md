@@ -319,3 +319,18 @@ impl<T1, T2, T3> TupleLen for (T1, T2, T3) {
     const LEN: usize = 3;
 }
 ```
+
+## Destructuring
+
+Извлечение элементов кортежа в отдельные переменные называется **Destructuring**. Пример:
+
+```rs
+let tup = (1, 2.0, '3', "Hello", true);
+let (i_num, f_num, ch, str_item,b) = tup;
+```
+
+Для возрата пустых значений может использоваться пустой кортеж:
+
+```rs
+let em_tup = ();
+```
