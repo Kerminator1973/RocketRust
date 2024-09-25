@@ -308,3 +308,27 @@ fn getint(value: f64) -> i64
     }    
 }
 ```
+
+## Индексный прогноз
+
+Особенность решение - используется инициализация всего массива указанным значением (`0_f64`). Определение массива осуществляется с выведением типа.
+
+```rs
+use std::io;
+
+fn main() {
+    let mut arr = [0_f64; 5];
+
+    for index in 0..5 {
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to get input");
+        arr[index] = input.trim().parse().expect("Failure to parse");
+    }
+
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    let index: usize = input.trim().parse().expect("Failure to parse");
+
+    print!("{:.2}", arr[index]);
+}
+```
