@@ -332,3 +332,26 @@ fn main() {
     print!("{:.2}", arr[index]);
 }
 ```
+
+## Static Array Modifier
+
+Особенности решения: при выводе результатов используется спецификатор формата `:?`, что позволяет вывести все элементы массива, или кортежа.
+
+```rs
+use std::io;
+
+fn main()
+{
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    let index: usize = input.trim().parse().expect("Failure to parse");
+
+    input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    let value: i64 = input.trim().parse().expect("Failure to parse");
+
+    let mut arr = [0; 10];
+    arr[index] = value;
+    print!("{:?}", arr);
+}
+```
