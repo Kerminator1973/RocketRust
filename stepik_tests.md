@@ -355,3 +355,29 @@ fn main()
     print!("{:?}", arr);
 }
 ```
+
+## Задание "Индексный обмен"
+
+Ввод одного значения выделен в отдельный. Также обмен двумя значениями реализован через tuple, хотя через временную переменную temp было бы более эффективно (скорее всего):
+
+```rs
+use std::io;
+
+fn read_input() -> usize {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main()
+{
+    let mut arr = [-621.5, 11.1, 2.0, -7.123, 0.125, 0.0, 0.000051789];
+
+    let first = read_input();
+    let second = read_input();    
+
+    (arr[first], arr[second]) = (arr[second], arr[first]);
+
+    println!("{:.9?}", arr);
+}
+```
