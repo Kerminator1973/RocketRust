@@ -138,6 +138,12 @@ io::stdin().read_line(&mut user_input).expect("Failed to get input");
 let in_num : i32 = user_input.trim().parse().expect("Failure to parse");
 ```
 
+Строковую переменную можно повторно использовать для ввода данных, если перед повторным вызовом read_line() вызвать у переменной метод clear():
+
+```rs
+user_input.clear();
+```
+
 ## Типы данных в Rust
 
 Скалярные типы - это типы описывающие только одно значение в некотором заданном диапазоне. Скалярные типы в Rust:
