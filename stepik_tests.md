@@ -383,3 +383,46 @@ fn main()
     println!("{:.9?}", arr);
 }
 ```
+
+## Стражи города Четный и города Нечетный
+
+Особенность решения - передача из функции типа String. Этот тип позволяет передать владение и может быть возвращён из функции. Тип str, который является типом с динамическим размером не может быть возвращён из функции напрямую.
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> i32 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn read_input_str() -> String {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main()
+{
+    let town = read_input_str();
+    let first = read_input();
+    let second = read_input();
+
+    check_entrance(first, &town);
+    check_entrance(second, &town);
+}
+
+fn check_entrance(number: i32, town: &str)
+{
+    let result = if town == "Четный" {0} else {1};
+
+    if number % 2 == result {
+        println!("{} в город {} вход разрешен", number, town)
+    }
+    else {
+        println!("{} в город {} вход запрещен", number, town)
+    }
+}
+```
