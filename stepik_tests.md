@@ -401,7 +401,7 @@ fn read_input() -> i32 {
 fn read_input_str() -> String {
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("Failed to get input");
-    input.trim().parse().expect("Failure to parse")
+    input.trim().to_string()
 }
 
 fn main()
