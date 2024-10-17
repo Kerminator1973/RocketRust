@@ -426,3 +426,64 @@ fn check_entrance(number: i32, town: &str)
     }
 }
 ```
+
+## Разведчик
+
+В задании разведчик нужно было разложить число на отдельные цифры, а затем сформировать из цифр строку, используя перекодировку.
+
+Моё решение выглядит следующим образом:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> i64 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+    let number = read_input();
+    let first = number / 1000 % 10;
+    let second = number / 100 % 10;
+    let third = number / 10 % 10;
+    let forth = number % 10;
+
+    let mut s = String::new();
+    s = s + &recode_num(first as i32);
+    s = s + &recode_num(second as i32);
+    s = s + &recode_num(third as i32);
+    s = s + &recode_num(forth as i32);
+
+    print!("{s}");
+}
+
+fn recode_num(num: i32) -> String
+{
+    return match num {
+        1 => String::from("О"),
+        2 => String::from("Н"),
+        3 => String::from("Г"),
+        _ => String::from("И"),
+    }    
+}
+```
+
+Моё решение не является эталоном компактности и эффективности - для разбора числа на цифры можно было бы использовать цикл. Также можно было бы использовать операцию replace(), например:
+
+```rs
+buffer.trim()
+    .replace("1", "О")
+    .replace("2", "Н")
+    .replace("3", "Г")
+    .replace("4", "И");
+```
+
+Ещё можно было бы ввести строку, а не целочисленное значение, создать итератор каждого символа строки и использовать в match уже его:
+
+```rs
+for i in number.trim().chars() {
+```
+
+Однако моим приоритетом было возвращать строку из функции, используя конструкцию match. Не оправдывая себя - написал, как написал. :-)
