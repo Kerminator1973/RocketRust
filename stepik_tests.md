@@ -531,3 +531,63 @@ fn pow2(power: u32) -> u32
 ```
 
 Что ещё понравилось в конкретной задаче - оптимизация некоторых математических операций по эвристическим формулам. По условиям задачи, функции pow2() и pow9() возвращают только последнюю цифру в числе.
+
+## Лунная экспедиция
+
+Решение задачи многословное, но в нём есть два важных момента:
+
+- иллюстрируется необходимость выполнения trim() после ввода строки - в конце строки могут быть символы CR и LF, которые могут сломать логику алгоритма
+- используется match для строковых значений
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> u32 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+
+    let mut direction = String::new();
+    io::stdin().read_line(&mut direction).expect("Failed to get input");
+    let trimmed_direction = direction.trim();
+
+    let command = read_input();
+
+    let after_state = match trimmed_direction {
+        "Север" => {
+            match command {
+                1 => "Запад",
+                2 => "Восток",
+                _ => "Север"
+            }
+        },
+        "Восток" => {
+            match command {
+                1 => "Север",
+                2 => "Юг",
+                _ => "Восток"
+            }
+        },
+        "Юг" => {
+            match command {
+                1 => "Восток",
+                2 => "Запад",
+                _ => "Юг"
+            }
+        },
+        _ => {
+            match command {
+                1 => "Юг",
+                2 => "Север",
+                _ => "Запад"
+            }
+        }
+    };
+
+    print!("Направление лунохода после выполнения команды: {after_state}");
+}
+```
