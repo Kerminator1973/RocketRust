@@ -591,3 +591,60 @@ fn main() {
     print!("Направление лунохода после выполнения команды: {after_state}");
 }
 ```
+
+## Дата
+
+Задача интересна возможностью использования оператора сопоставления (match) с использованием списка значений. Мой вариант решения:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> u8 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn read_input_year() -> u16 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+    let day = read_input();
+    let month = read_input();
+    let year = read_input_year();
+
+    let mut correct = false;
+
+    if year >= 1 && year <= 2024 {
+
+        match month {
+            1 | 3 | 5 | 7 | 8 | 10 | 12  => {
+                correct = if day >= 1 && day <= 31 {true} else {false};
+            },
+            2 => {
+                if year % 4 == 0 && year % 100 != 0 {
+                    correct = if day >= 1 && day <= 29 {true} else {false};
+                } else {
+                    correct = if day >= 1 && day <= 28 {true} else {false};
+                }
+            },
+            4 | 6 | 9 | 11 => {
+                correct = if day >= 1 && day <= 30 {true} else {false};
+            },
+            _ => {}
+        }
+    }
+
+    if correct {
+        print!("Дата корректна!");
+    } else {
+        print!("Дата некорректна!");
+    }
+}
+```
+
+Особенность задачи состоит в том, что требуется учитывать не только високосные года и года кратные 100, которые являются обычными, не високосными.
