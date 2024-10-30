@@ -546,3 +546,12 @@ fn main() {
     println!("{:08b}", 1u8);
 }
 ```
+
+## Возведение числа в степень n
+
+Пример:
+
+```rs
+let base: u32 = 2;
+let result = base.pow(n);
+```
