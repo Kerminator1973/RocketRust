@@ -665,3 +665,80 @@ fn main() {
     }
 }
 ```
+
+## Номерной валидатор
+
+В решении задачи следует отметить использование макроса format!() и chaining methods, которые детают код читаемым и могут сильно сэкономить время. Цепочки методов - это, несомненно, та тема на изучение которой следует потратить время и развить навык использования этой техники.
+
+Моё решение задачи, как часто бывает, слегка избыточное, но с дополнительными проверками кода:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> u64 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+    let card_number = read_input();
+
+    let mut acc = 0;
+    for exp in 0..16 {
+        acc += get_digit(card_number, exp as u32);
+    }
+
+    //println!("{acc}");
+
+    let mut second_acc = 0;
+    let mut count = 0;
+    for exp in (1..16).step_by(2) {
+        let digit = get_digit(card_number, exp as u32);
+        second_acc += digit;
+
+        if digit > 4 {
+            count += 1;
+        }
+    }
+
+    //println!("{second_acc}");
+    //println!("{count}");
+
+    let sum = acc + second_acc + count;
+    //println!("{sum}");
+
+    let formatted = get_formatted(card_number);
+
+    if sum % 10 == 0 {
+        println!("Карта с номером {} действительна", formatted);
+    }
+    else {
+        println!("Карты с номером {} не существует", formatted);
+    }
+}
+
+fn get_digit(card_number: u64, exponent: u32) -> u64
+{
+    let base: u64 = 10;
+    let devider = base.pow(exponent);
+    let reminder = card_number / devider;
+    reminder % 10
+}
+
+fn get_formatted(card_number: u64) -> String
+{
+    let chunk_size = 4;
+
+    let number = format!("{:0>16}",card_number);
+
+    number
+        .chars()
+        .collect::<Vec<_>>() // Собираем символы в вектор
+        .chunks(chunk_size) // Разбиваем на блоки
+        .map(|chunk| chunk.iter().collect::<String>()) // Собираем блоки обратно в строки
+        .collect::<Vec<_>>() // Собираем все блоки в вектор
+        .join(" ") // Объединяем блоки с пробелом
+}
+```
