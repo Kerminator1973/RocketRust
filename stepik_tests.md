@@ -742,3 +742,51 @@ fn get_formatted(card_number: u64) -> String
         .join(" ") // Объединяем блоки с пробелом
 }
 ```
+
+## Stop
+
+Моё решение:
+
+```rs
+use std::io;
+
+fn main()
+{
+    let mut stop = String::new();
+    io::stdin().read_line(&mut stop).expect("Failed to get input");
+
+    let mut input = String::new();
+
+    let mut acc = 0f32;
+
+    loop {
+        input.clear();
+        std::io::stdin()
+            .read_line(&mut input)
+            .expect("Ошибка при чтении ввода.");
+
+        if input == stop {
+            break;
+        }            
+
+        let number: f32 = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+
+        acc += number;
+    }
+
+    let integer: i32 = (acc * 10.0) as i32;
+    let corrected: f32 = (integer as f32) / 10.0;
+
+    println!("{corrected:.1}");
+}
+```
+
+В отличие от других решений, мне почему-то не удалось избежать получения в пятом тесте значения "-0.0", и пришлось решать проблему через округление.
+
+Из интересных особенностей задачи:
+
+- используется цикл **loop**
+- при формитировании вывода я впервые использовал модификатор вывода `"{value:.1}"`
