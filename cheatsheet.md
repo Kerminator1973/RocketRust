@@ -693,3 +693,9 @@ for ch in input.trim().chars() {
 if input.trim().chars().all(char::is_numeric) {
 }
 ```
+
+Создать из строки коллекцию отдельных символов можно используя `chars.collect()`:
+
+```rs
+let chars: Vec<char> = num.to_string().chars().collect();
+```
