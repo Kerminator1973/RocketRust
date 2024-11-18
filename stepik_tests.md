@@ -790,3 +790,34 @@ fn main()
 
 - используется цикл **loop**
 - при формитировании вывода я впервые использовал модификатор вывода `"{value:.1}"`
+
+## Числовой палиндром
+
+Моё решение задачи:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> u32 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main()
+{
+    let num = read_input();
+
+    let original_string = num.to_string();
+    let reverse_string: String = original_string.chars().rev().collect();
+
+    if original_string == reverse_string {
+        print!("Число {num} является палиндромом");
+    } else {
+        print!("Число {num} не является палиндромом");
+    }
+}
+```
+
+Полезным в этом решении кажется использованием _chain method_ для формирования строки в обратном порядке: `num.to_string().chars().rev().collect()`
