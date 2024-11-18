@@ -798,7 +798,6 @@ fn main()
 ```rs
 use std::io;
 
-// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
 fn read_input() -> u32 {
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("Failed to get input");
@@ -821,3 +820,33 @@ fn main()
 ```
 
 Полезным в этом решении кажется использованием _chain method_ для формирования строки в обратном порядке: `num.to_string().chars().rev().collect()`
+
+## Все на одно лицо
+
+Решением задачи является:
+
+```rs
+use std::io;
+
+fn read_input() -> u32 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main()
+{
+    let num = read_input();
+    let num_str = num.to_string();
+
+    let mut iter = num_str.chars();
+    let first = iter.next().unwrap();
+    if iter.all(|c| c == first) {
+        println!("Все цифры числа {} равны", num);
+    } else {
+        println!("Цифры числа {} неодинаковые", num);
+    }
+}
+```
+
+К итератору на массив элементов типа char применяется метод **all**(), который сравнивает все элементы массива с его первым элементом.
