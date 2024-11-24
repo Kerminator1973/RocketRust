@@ -344,6 +344,46 @@ cargo build --release
 gcc -o main main.c -Lvrandom/target/release/ -lvrandom
 ```
 
+### Идеоматический подход
+
+Идеоматический подход Rust (создание обёртки в виде структуры) выглядит следующим образом:
+
+```rs
+#[repr(C)]
+pub struct VRandom {
+    x: u64;
+}
+
+impl VRandom {
+    #[no_mangle]
+    pub extern "C" fn newVRandom(seed: u64) -> Self {
+        VRandom { x: seed }
+    }
+
+    // Реализация функций nextVRandom() и seedVRandom()...
+    #[no_mangle]
+    pub extern "C" fn nextVRandom(&mut self) -> u64 {
+        self.x = self.x.wrapping_mul(69069).wrapping_add(362437);
+        self.x
+    }
+
+    #[no_mangle]
+    pub extern "C" fn seedVRandom(&mut self, seed: u64) {
+        self.x = seed;
+    }
+}
+```
+
+В самом конце, когда весь код портирован, следует удалить все unsafe-секции, чтобы добавить встроенный контроль Rust.
+
+Существует инструмент, который позволяет сгенерировать header files на Си для Rust-кода. Установить инструмент можно командой:
+
+```shell
+cargo install cbindgen
+```
+
+Затем нужно запустить эту утилиту на верхнем уровне вашего проекта.
+
 ## Code covegare in Rust
 
 Рекомендуется для ознакомления автор - [Dotan Nahum](https://jondot.medium.com/). Начать исследование темы покрытия кода тестами можно со статьи [How to do code coverage in Rust](https://jondot.medium.com/how-to-do-code-coverage-in-rust-9548e0fbacce).
