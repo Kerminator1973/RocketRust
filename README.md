@@ -249,6 +249,101 @@ cargo install cargo-binutils cargo-embed cargo-flash cargo-expand
 
 Также можно почитать о пректе [Slint](https://slint-ui.com/) - это Framework для разработки GUI-приложений для Embedded-устройств. Бывшие разработчики Qt из Trolltech сделали новый Framework, который работает даже на микроконтроллерах с 256 Кб ОЗУ.
 
+## Портирование приложений с Си на Rust
+
+Материал взят из видео [Migrating from C to Rust - Part 1: Calling Rust Code from C](https://www.youtube.com/watch?v=WsnFZk5-xwQ&ab_channel=GaryExplains) из канала **Gary Explains**.
+
+Решаются обе задачи: вызов Rust-кода из Си и Си кода из Rust. Однако для целей миграции с Си на Rust, более разумным кажется поэтапным (функция за функцией) перевод отдельных функций из Си в Rust.
+
+Предположим, что у нас есть некоторый код на Си:
+
+```c
+static unsigned long x = 123456789;
+
+unsigned long vrandom(void) {
+    return 69069 * x + 362437;
+}
+
+void vseed(unsigned long seed) {
+    x = seed;
+}
+```
+
+Сборка библиотки средствами gcc может выглядеть следующим образом:
+
+```shell
+gcc -c vrandom.c                    # Компилируем исходные тексты библиотеки
+ar rcs libvrandom.a vrandom.o       # Создаём библиотечный файл из объектного
+gcc -o main main.c -L. -lvrandom    # Собираем исполняемый файл
+```
+
+Задача - заменить файл vrando.c на Rust-файл, который делает всё тоже самое, что и "vrandom.c".
+
+Код на Rust может выглядеть следующим образом:
+
+```rs
+static mut X: u64 = 123456789;
+
+#[no_mangle]
+pub extern "C" fn vrandom() -> u64 {
+    unsafe {
+        X = X.wrapping_mul(69069).wrapping_add(362437);
+        X
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn vseed(seed: u64) {
+    unsafe {
+        X = seed;
+    }
+}
+```
+
+Мы используем ключевое слово **unsafe**, когда необходимо транслировать Си точно. Функции wrapping_mul() и wrapping_add() необходимы, т.к. Rust-код является safe language, а операции умножения и сложения могут приводить к переполнению, которое перехватывает Rust runtime.
+
+Кроме этого нам требуется добавить аннотацию `#[no_mangle]` для каждой функции, для того, чтобы избежать создания уникальных имён функций при генерации машинного кода. Смысл _mangling_ состоит в том, что в приложении может быть определено несколько функций с одинаковым именем. Чтобы избежать коллизий, Rust даёт каждой функции уникальное имя, кроторое включает имя crate, имя модуля, или типа, имя функции, а также hash-код. 
+
+Например, есть некоторое определение:
+
+```rs
+struct One;
+struct Two;
+
+impl One { fn foo() { ... }}
+impl Two { fn foo() { ... }}
+```
+
+Для функции foo() в реализации структуры One, mangled name может выглядеть так: `_ZN7example3One3foo17h16fcc82fa6043ccbE`
+
+Также нам требуется указать явным образом нотацию функций, добавив `extern "C"`.
+
+Для сборки проекта следует использовать следующий "Cargo.toml":
+
+```
+[package]
+name = "vrandom"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]  # Создаём статическую библиотеку
+
+[dependencies]
+```
+
+Собрать библиотеку компилятором Rust можно следующим образом:
+
+```shell
+cargo build --release
+```
+
+Далее можно прилинковать библиотеку на Rust к Си-приложению, в котором реализована функция main():
+
+```shell
+gcc -o main main.c -Lvrandom/target/release/ -lvrandom
+```
+
 ## Code covegare in Rust
 
 Рекомендуется для ознакомления автор - [Dotan Nahum](https://jondot.medium.com/). Начать исследование темы покрытия кода тестами можно со статьи [How to do code coverage in Rust](https://jondot.medium.com/how-to-do-code-coverage-in-rust-9548e0fbacce).
