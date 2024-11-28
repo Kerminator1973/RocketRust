@@ -864,3 +864,102 @@ for i in 0..n {
     println!("{spaces}{stars}");
 }
 ```
+
+## Треугольник Паскаля
+
+Очень интересная задача, которая позволяет поэкспериментировать с работой с многомерными массивами, включая использование `Default::default()` для инициализации массива строк:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> usize {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+
+    let n = read_input();
+
+    // Создаём двух мерный массив и заполняем его нулями
+    let mut array: [[i32; 10]; 10] = [[0; 10]; 10];
+    for y in 0..n {
+        array[y][0] = 1;
+    }
+
+    for y in 1..n {
+        for x in 1..10 {
+            array[y][x] = array[y-1][x-1] + array[y-1][x];
+        }
+    }
+
+    // Далее формируем строки из символов
+    let mut strings: [String; 10] = Default::default();
+    for y in 0..n {
+        let mut acc = String::new();
+        for x in 0..y + 1 {
+            if x > 0 {
+                acc += " ";
+            }
+
+            acc += &array[y][x].to_string();
+        }
+
+        strings[y] = String::from(acc);
+    }
+
+    // Вычисляем смещение оси
+    let max_length = strings[n - 1].len();
+
+    for y in 0..n {
+        let shift = (max_length - strings[y].len()) / 2;
+        let spaces = " ".repeat(shift);
+        println!("{}{}", spaces, strings[y]);
+    }
+}
+```
+
+ChatGPT 4o сгенерировал гораздо более интересный код:
+
+```rs
+fn main()
+{
+    let n = read_input();
+
+    // Create a 2D vector and fill it with zeros
+    let mut array = vec![vec![0; 10]; n];
+    for y in 0..n {
+        array[y][0] = 1;
+    }
+
+    for y in 1..n {
+        for x in 1..10 {
+            array[y][x] = array[y - 1][x - 1] + array[y - 1][x];
+        }
+    }
+
+    // Create strings from the array
+    let strings: Vec<String> = (0..n)
+        .map(|y| {
+            let row: String = (0..=y)
+                .map(|x| array[y][x].to_string())
+                .collect::<Vec<String>>()
+                .join(" ");
+            row
+        })
+        .collect();
+
+    // Calculate the maximum length of the strings
+    let max_length = strings.last().map_or(0, |s| s.len());
+
+    for y in 0..n {
+        let shift = (max_length - strings[y].len()) / 2;
+        let spaces = " ".repeat(shift);
+        println!("{}{}", spaces, strings[y]);
+    }
+}
+```
+
+По факту, Stepik ответ не принял - все варианты после шестого у него получились ошибочными. Как оказалось, это связано с тем, что "ёлочка" в варианте Stepik-а - это упрощённый вариант, в котором первый символ смещается на единицу, тогда как в моём решение - ёлочка красивая и сбалансированная вокруг "ствола дерева".
