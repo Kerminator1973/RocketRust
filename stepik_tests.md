@@ -963,3 +963,73 @@ fn main()
 ```
 
 По факту, Stepik ответ не принял - все варианты после шестого у него получились ошибочными. Как оказалось, это связано с тем, что "ёлочка" в варианте Stepik-а - это упрощённый вариант, в котором первый символ смещается на единицу, тогда как в моём решение - ёлочка красивая и сбалансированная вокруг "ствола дерева".
+
+## Умный поезд
+
+Ключевой особенностью задачи является потребность исключить из списка пассажиров тех, кто выходит на остановках. В первом варианте я использован метод remove() вектора `Vec<u32>`, но потом был найден более эффективный вариант - метод retain(), который не только обходит все элементы в списке, но и эффективно удаляет те, для которых лямбда-функция вернула значение false:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> u16 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn read_input_u32() -> u32 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+
+    let count = read_input();
+
+    // Заранее указываем количество элементов в массиве
+    let mut passengers: Vec<u32> = Vec::with_capacity(count as usize);
+    for _ in 0..count {
+        let passenger = read_input_u32();
+        passengers.push(passenger);
+    }
+
+    let mut station = 1;
+    loop {
+
+        println!("Поезд прибыл на Станцию № {station}!");
+
+        let mut leave: Vec<u32> = Vec::new();
+        passengers.retain(|&passenger| {
+            let pass_id = passenger & 0xFFFF;
+            let station_id = passenger >> 16;
+
+            if station_id == station {
+                leave.push(pass_id);
+                false // Удаляем этого пассажира из списка
+            } else {
+                true // Сохрнаяем пассажира в списке
+            }
+        });
+        
+        if leave.len() > 0 {
+            println!("Просим на выход пассажиров с номером(ами):");
+
+            let result = leave.iter()
+                .map(|num| num.to_string())
+                .collect::<Vec<String>>()
+                .join(", ");
+            println!("{result}");
+        }
+
+        if passengers.len() == 0 {
+            break;
+        }
+
+        station += 1;
+    }
+}
+```
+
+Также полезным является настройка размера массива посредством `Vec::with_capacity(count as usize);` в момент создания, т.к.мы заранее знаем размер этого массива.
