@@ -1033,3 +1033,64 @@ fn main() {
 ```
 
 Также полезным является настройка размера массива посредством `Vec::with_capacity(count as usize);` в момент создания, т.к.мы заранее знаем размер этого массива.
+
+## Палиндромер
+
+Задача не была успешно решена из-за срабатывания лимита по времени. Тесты №10 и №11 не были выполнены. Похоже, что я реализовывал _brute force_ алгоритм, а в действительности, можно где-то выполнить _shortcut_.
+
+Моё не оптимальное решение:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> u64 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+    let value = read_input();
+    let input = value.to_string();
+    let digits: Vec<char> = input.chars().collect();
+
+    let mut max_value = 0_u64;
+
+    // Функция проверяет, что число является палиндромом и изменяет максимальное значение
+    fn fun_name(perm: &[char], max_value: &mut u64) {
+        let first: String = perm.iter().collect();
+        let second: String = perm.iter().rev().collect();
+
+        if first == second {
+            let value: u64 = first.parse().unwrap();
+            if *max_value < value {
+                *max_value = value;
+            }
+        }
+    }
+
+    // Запускаем рекурсивную функцию, которая переберёт все возможные варианты строк
+    permute(&digits, 0, &mut max_value, &fun_name);
+
+    if max_value > 0 {
+        println!("{max_value}");
+    } else {
+        println!("Число {value} не образует палиндром");
+    }
+}
+
+// Рекурсивная функция, которая генерирует все возможные варианты чисел с указанными цифрами
+fn permute(chars: &[char], start: usize, mvalue: &mut u64, callback: &dyn Fn(&[char], &mut u64)) {
+    if start == chars.len() {
+        callback(chars, mvalue);
+        return;
+    }
+
+    for i in start..chars.len() {
+        let mut chars = chars.to_vec();
+        chars.swap(start, i);
+        permute(&chars, start + 1, mvalue, callback);
+    }
+}
+```
