@@ -1096,3 +1096,62 @@ fn permute(chars: &[char], start: usize, mvalue: &mut u64, callback: &dyn Fn(&[c
 ```
 
 Более эффективным кажется алгоритм, в котором вычисляется количество пар цифр. Цифра без пары может быть только одна и она всегда размещается в середине числа. Соответственно, мы считаем общее количество используемых цифр в числе, для всех парных уменьшаем их количество в два раза и сортируем по убыванию. в центр вставляем единственное непарное число, если оно есть. Важно не забыть, что парные цифры могут встречаться два, четыре, шесть - и более раз.
+
+Ниже добавил решение прошедшее Unit-тесты:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> u64 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+    let value = read_input();
+    let input = value.to_string();
+
+    let mut counters = [0_u8; 10];
+
+    let digits: Vec<char> = input.chars().collect();
+    for ch in digits {
+        let index = ((ch as u8) - ('0' as u8)) as usize;
+        counters[index] = counters[index] + 1;
+    }
+
+    let mut in_the_middle = String::new();
+    let mut even_counts = 0;
+    for i in 0..10 {
+        if counters[i] % 2 == 1 {
+            even_counts += 1;
+            in_the_middle = i.to_string();
+        }
+    }
+
+    if even_counts > 1 {
+        println!("Число {value} не образует палиндром");
+        return;
+    }
+
+    let mut str = String::new();
+    for i in (0..10).rev() {
+        let count = counters[i] / 2;
+        for _ in 0..count {
+            str += &(i as u8).to_string();
+        }
+    }
+
+    let reversed: String = str.chars().rev().collect();
+    
+    let count = str.len() + in_the_middle.len();
+    if count > 0 {
+        println!("{str}{in_the_middle}{reversed}");
+    } else {
+        println!("Число {value} не образует палиндром");
+    }
+}
+```
+
+Решение не оптимальное, но гораздо более производительное, чем _brute force_. Нет сил оптимизировать код прямо сейчас. :-(
