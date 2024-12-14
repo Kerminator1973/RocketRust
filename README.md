@@ -249,6 +249,78 @@ cargo install cargo-binutils cargo-embed cargo-flash cargo-expand
 
 Также можно почитать о пректе [Slint](https://slint-ui.com/) - это Framework для разработки GUI-приложений для Embedded-устройств. Бывшие разработчики Qt из Trolltech сделали новый Framework, который работает даже на микроконтроллерах с 256 Кб ОЗУ.
 
+### Кросс-компиляция для Linux на ARM-процессорах
+
+ChatGPT предложил следующий вариант...
+
+Убедится, что компилятор Rust установлен и путь к компилятору прописан в системе корректно:
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+```
+
+Необходимо добавить целевую платформу:
+
+```shell
+rustup target add aarch64-unknown-linux-gnu
+```
+
+Команда `rustup target add <target>` загружает необходимые компоненты для целевой платформы. Эти файлы включают стандартные библиотеки и вспомогательные инструментальные средства.
+
+> В принципе, этого должно быть достаточно для кросс-компиляции в указанную целевую платформу.
+
+Получить полный список targets можно командой:
+
+```shell
+rustup target list
+```
+
+Примеры:
+
+- `aarch64-unknown-linux-gnu`: 64-bit ARM (ARMv8) Linux
+- `aarch64-unknown-linux-musl`: 64-bit ARM (ARMv8) Linux with musl libc
+- `armv7-unknown-linux-gnueabihf`: 32-bit ARM (ARMv7) Linux with hard float
+- `armv7-unknown-linux-musleabihf`: 32-bit ARM (ARMv7) Linux with musl libc
+- `riscv64gc-unknown-linux-gnu`: RISC-V 64-bit Linux
+
+Добавления стандартных библиотек для rustc недостаточно. Компилятор rustc полагается на использоание внешних компиляторов и их нужно устанавливать дополнительно.
+
+Далее необходимо добавить компилятор для целевой платформы:
+
+```shell
+sudo apt-get install gcc-aarch64-linux-gnu
+```
+
+Для сборки Linux-приложений, работающих на ARMv7 с поддержкой аппаратной математики, обычно устанавливается компилятор gcc-arm-linux-gnueabihf, который можно установить в Debian командой:
+
+```shell
+sudo apt-get install gcc-arm-linux-gnueabihf
+```
+
+Затем в конфигурационном файле проекта (".cargo/config.toml") необходимо указать, для какой целевой платформы используется линковка, например:
+
+```toml
+# .cargo/config.toml
+[target.aarch64-unknown-linux-gnu]
+linker = "aarch64-linux-gnu-gcc"
+```
+
+Вариант для 32-битной Linux на ARMv7:
+
+```toml
+[target.armv7-unknown-linux-gnueabihf]
+linker = "arm-linux-gnueabihf-gcc"
+```
+
+Т.е. осуществляя кросс-компиляцию под конкретную аппаратную платформу, мы должны указывать платформу (armv7-unknown-linux-gnueabihf) и компилятор (gcc-arm-linux-gnueabihf). Замечу, что в этом есть смысл, поскольку компиляторы могут быть разные и кросс-компилятор можно собрать их исходных текстов, например, используя скрипт [crosstool-NG](https://github.com/crosstool-ng/crosstool-ng).
+
+Собрать проект следует явно указывая target:
+
+```shell
+cargo build --target aarch64-unknown-linux-gnu
+```
+
 ## Портирование приложений с Си на Rust
 
 Материал взят из видео [Migrating from C to Rust - Part 1: Calling Rust Code from C](https://www.youtube.com/watch?v=WsnFZk5-xwQ&ab_channel=GaryExplains) из канала **Gary Explains**.
