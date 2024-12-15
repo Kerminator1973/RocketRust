@@ -308,17 +308,6 @@ rustup target add armv7-unknown-linux-gnueabihf
 sudo apt-get install gcc-arm-linux-gnueabihf
 ```
 
-_ChatGPT предложил следующий вариант..._
-
-Затем в конфигурационном файле проекта (".cargo/config.toml") необходимо указать, для какой целевой платформы используется линковка, например, вариант для 32-битной Linux на ARMv7:
-
-```toml
-[target.armv7-unknown-linux-gnueabihf]
-linker = "arm-linux-gnueabihf-gcc"
-```
-
-Т.е. осуществляя кросс-компиляцию под конкретную аппаратную платформу, мы должны указывать платформу (armv7-unknown-linux-gnueabihf) и компилятор (gcc-arm-linux-gnueabihf). Замечу, что в этом есть смысл, поскольку компиляторы могут быть разные и кросс-компилятор можно собрать их исходных текстов, например, используя скрипт [crosstool-NG](https://github.com/crosstool-ng/crosstool-ng).
-
 Собрать проект следует явно указывая target:
 
 ```shell
@@ -328,6 +317,8 @@ cargo build --target armv7-unknown-linux-gnueabihf
 Однако сборка завершилась с ошибкой:
 
 ```output
+warning: unused manifest key: target.armv7-unknown-linux-gnueabihf.linker
+...
 /usr/bin/ld: /home/developer/projects/stepik/target/armv7-unknown-linux-gnueabihf/debug/deps/stepik-b0d9d777cdea05d9.0dm5krgeozpp4c8e4fn20bqoy.rcgu.o: error adding symbols: file in wrong format
 collect2: error: ld returned 1 exit status
 ```
@@ -340,8 +331,32 @@ stepik-b0d9d777cdea05d9.eevt77jxka9iw1eeoluea0pzz.rcgu.o:
 ELF 32-bit LSB relocatable, ARM, EABI5 version 1 (SYSV), with debug_info, not stripped
 ```
 
-Очевидно, что проблема возникла при линковке этих файлов с библиотеками.
+Очевидно, что проблема возникла при линковке этих файлов с библиотеками. Решается проблема следующим образом: в домашней папке пользователя есть невидимая папка ".cargo". Следует перейти в эту папку, создать файл `config.toml` и добавить в этот файл целевую платформу:
 
+```toml
+[target.armv7-unknown-linux-gnueabihf]
+linker = "arm-linux-gnueabihf-gcc"
+```
+
+Т.е. осуществляя кросс-компиляцию под конкретную аппаратную платформу, мы должны указывать платформу (armv7-unknown-linux-gnueabihf) и компилятор (gcc-arm-linux-gnueabihf). Замечу, что в этом есть смысл, поскольку компиляторы могут быть разные и кросс-компилятор можно собрать их исходных текстов, например, используя скрипт [crosstool-NG](https://github.com/crosstool-ng/crosstool-ng).
+
+После изменения `~/.cargo/config.toml` сборка завершиться успешно.
+
+Для запуска приложения непосредственно на целевой платформе следует собрать приложение в Release-сборке:
+
+```shell
+cargo build --target armv7-unknown-linux-gnueabihf --release
+```
+
+Однако следует заметить, что приложение будет собрано с динамической линковкой и к нему не будет применена операция strip. При необходимости следует выполнить дополнительные настроечные шаги.
+
+После копирования исполняемого файла "stepik-6d9d1cc5e0992164" на целевую платформу (Raspberry Pi 3) и смены прав запуска:
+
+```shell
+chmod a+x ./stepik-6d9d1cc5e0992164
+```
+
+Приложение успешно запустилось и выполнило свою работу.
 
 ## Портирование приложений с Си на Rust
 
