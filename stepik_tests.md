@@ -1155,3 +1155,34 @@ fn main() {
 ```
 
 Решение не оптимальное, но гораздо более производительное, чем _brute force_. Нет сил оптимизировать код прямо сейчас. :-(
+
+## Ромбик
+
+Задача интересна, по большей, части использованием функции repeat(), которая позволяет сформировать строку состоящую из повторяющихся n-раз подстроки:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> u64 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+    let n = read_input();
+
+    for i in 1..n {
+        let count = i * 2 - 1;
+        println!("{}{}", " ".repeat((n - i) as usize), "*".repeat(count as usize));
+    }
+
+    println!("{}", "*".repeat((n * 2 - 1) as usize));
+
+    for i in (1..n).rev() {
+        let count = i * 2 - 1;
+        println!("{}{}", " ".repeat((n - i) as usize), "*".repeat(count as usize));
+    }
+}
+```
