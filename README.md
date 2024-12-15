@@ -278,19 +278,7 @@ rustc --version
 rustup update
 ```
 
-ChatGPT предложил следующий вариант...
-
-Необходимо добавить целевую платформу:
-
-```shell
-rustup target add aarch64-unknown-linux-gnu
-```
-
-Команда `rustup target add <target>` загружает необходимые компоненты для целевой платформы. Эти файлы включают стандартные библиотеки и вспомогательные инструментальные средства.
-
-> В принципе, этого должно быть достаточно для кросс-компиляции в указанную целевую платформу.
-
-Получить полный список targets можно командой:
+Необходимо добавить целевую платформу. Получит список доступных платформ можно командой:
 
 ```shell
 rustup target list
@@ -304,13 +292,15 @@ rustup target list
 - `armv7-unknown-linux-musleabihf`: 32-bit ARM (ARMv7) Linux with musl libc
 - `riscv64gc-unknown-linux-gnu`: RISC-V 64-bit Linux
 
-Добавления стандартных библиотек для rustc недостаточно. Компилятор rustc полагается на использоание внешних компиляторов и их нужно устанавливать дополнительно.
-
-Далее необходимо добавить компилятор для целевой платформы:
+Предполим, что мы хотели бы собирать приложение для ARMv7 для Raspberry PI OS. В этом случае, нам бы потребовалось выполнить следующую команду:
 
 ```shell
-sudo apt-get install gcc-aarch64-linux-gnu
+rustup target add armv7-unknown-linux-gnueabihf
 ```
+
+Команда `rustup target add <target>` загружает необходимые компоненты для целевой платформы. Эти файлы включают стандартные библиотеки и вспомогательные инструментальные средства.
+
+Добавления стандартных библиотек для rustc недостаточно. Компилятор rustc полагается на использование внешних компиляторов и их нужно устанавливать дополнительно.
 
 Для сборки Linux-приложений, работающих на ARMv7 с поддержкой аппаратной математики, обычно устанавливается компилятор gcc-arm-linux-gnueabihf, который можно установить в Debian командой:
 
@@ -318,15 +308,9 @@ sudo apt-get install gcc-aarch64-linux-gnu
 sudo apt-get install gcc-arm-linux-gnueabihf
 ```
 
-Затем в конфигурационном файле проекта (".cargo/config.toml") необходимо указать, для какой целевой платформы используется линковка, например:
+_ChatGPT предложил следующий вариант..._
 
-```toml
-# .cargo/config.toml
-[target.aarch64-unknown-linux-gnu]
-linker = "aarch64-linux-gnu-gcc"
-```
-
-Вариант для 32-битной Linux на ARMv7:
+Затем в конфигурационном файле проекта (".cargo/config.toml") необходимо указать, для какой целевой платформы используется линковка, например, вариант для 32-битной Linux на ARMv7:
 
 ```toml
 [target.armv7-unknown-linux-gnueabihf]
@@ -338,8 +322,26 @@ linker = "arm-linux-gnueabihf-gcc"
 Собрать проект следует явно указывая target:
 
 ```shell
-cargo build --target aarch64-unknown-linux-gnu
+cargo build --target armv7-unknown-linux-gnueabihf
 ```
+
+Однако сборка завершилась с ошибкой:
+
+```output
+/usr/bin/ld: /home/developer/projects/stepik/target/armv7-unknown-linux-gnueabihf/debug/deps/stepik-b0d9d777cdea05d9.0dm5krgeozpp4c8e4fn20bqoy.rcgu.o: error adding symbols: file in wrong format
+collect2: error: ld returned 1 exit status
+```
+
+Эта ошибка указывает на то, что линковка не балы успешной. Если посмотреть на какой-нибудь ".o"-файл из папки "./target/armv7-unknown-linux-gnueabihf/debug/deps", то можно увидеть, что его платформа соответствует целевой: 
+
+```output
+file stepik-b0d9d777cdea05d9.eevt77jxka9iw1eeoluea0pzz.rcgu.o 
+stepik-b0d9d777cdea05d9.eevt77jxka9iw1eeoluea0pzz.rcgu.o: 
+ELF 32-bit LSB relocatable, ARM, EABI5 version 1 (SYSV), with debug_info, not stripped
+```
+
+Очевидно, что проблема возникла при линковке этих файлов с библиотеками.
+
 
 ## Портирование приложений с Си на Rust
 
