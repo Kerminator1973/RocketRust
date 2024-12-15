@@ -1164,7 +1164,7 @@ fn main() {
 use std::io;
 
 // Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
-fn read_input() -> u64 {
+fn read_input() -> usize {
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("Failed to get input");
     input.trim().parse().expect("Failure to parse")
@@ -1175,14 +1175,14 @@ fn main() {
 
     for i in 1..n {
         let count = i * 2 - 1;
-        println!("{}{}", " ".repeat((n - i) as usize), "*".repeat(count as usize));
+        println!("{}{}", " ".repeat(n - i) , "*".repeat(count));
     }
 
-    println!("{}", "*".repeat((n * 2 - 1) as usize));
+    println!("{}", "*".repeat(n * 2 - 1));
 
     for i in (1..n).rev() {
         let count = i * 2 - 1;
-        println!("{}{}", " ".repeat((n - i) as usize), "*".repeat(count as usize));
+        println!("{}{}", " ".repeat(n - i), "*".repeat(count));
     }
 }
 ```
