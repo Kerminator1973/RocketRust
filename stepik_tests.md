@@ -1235,3 +1235,63 @@ fn bitwise_sum(a: i32, b: i32) -> i32 {
     x
 }
 ```
+
+## Задача "Повторы"
+
+Даны десять цифр, нужно вывести те из них, которые повторяются и вывести через пробел отсортированными в порядке убывания. 
+
+Моё решение:
+
+```rs
+use std::io;
+use std::collections::HashMap;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> i32 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+
+    let mut counts: HashMap<i32, i32> = HashMap::new();
+
+    // Подсчитываем повторы используя HashMap
+    for _ in 0..10 {
+        let value = read_input();
+        *counts.entry(value).or_insert(0) += 1;
+    }
+
+    // Формируем выходной массив с повторами
+    let mut numbers: Vec<&i32> = Vec::new();
+    for (_name, _count) in &counts {
+        if _count > &1 {
+            numbers.push(_name);
+        }
+    }
+
+    if numbers.is_empty() {
+        println!("Повторяющихся чисел нет");
+    }
+    else {
+        // Сортируем массив по убыванию
+        numbers.sort_by(|a, b| b.cmp(a));
+        let concatenated = numbers
+            .iter() 
+            .map(|&num| num.to_string()) 
+            .collect::<Vec<String>>()
+            .join(" ");
+
+        println!("{concatenated}");
+    }
+}
+```
+
+Очень понравился API для работы в Rust с HashMap, а именно то, как можно добавлять значение в map, используя значение по умолчанию:
+
+```rs
+*counts.entry(value).or_insert(0) += 1;
+```
+
+Следует заметить, что идеоматический Rust-код действительно очень красив. В C\# потребовалось бы использовать условие и, как минимуми, две строки для изменения, или добавления кода.
