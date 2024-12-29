@@ -107,11 +107,12 @@ fn read_input() -> usize {
 > На самом деле, в C\# 8 и выше можно было бы использовать вот такой код:
 >
 >```csharp
-static void AddOrUpdate(Dictionary<string, int> dictionary, string key, int value)
-{
-    dictionary[key] = dictionary.GetValueOrDefault(key) + value;
-}
-```
+> static void AddOrUpdate(Dictionary<string, int> dictionary, string key, int value)
+> {
+>   dictionary[key] = dictionary.GetValueOrDefault(key) + value;
+>}
+>```
+>
 > Т.е.формально это то же oneliner, хотя и чуть менее красивый.
 
 Очень непривычным является использование строк. В Rust существует тип String с передачей ownership и тип str с динамическим размером. Эти типы не совместимы между собой и требуют преведения. Например, str преобразовать в String можно используя функцию `to_string()`. Функции могут возвращать только строки типа String. Использование str и передача среза строки посредством &str гораздо более эффективно, т.к. позволяет избежать создания копии строки.
