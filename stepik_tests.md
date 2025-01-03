@@ -1320,3 +1320,49 @@ fn main() {
 ```
 
 Решение не является вычислительно эффективным, но зато читается достаточно легко.
+
+## Задача "Навстречу ln 2"
+
+Задача интересна использованием библиотеки **num-format**, которая повзоляет динамически изменять количество цифр после запятой.
+
+Подключить библиотеку можно через "Cargo.toml":
+
+```
+[dependencies]
+num-format = "0.4"
+```
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> usize {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+
+    let n = read_input();
+
+    let mut acc = 1f64;
+    for i in 2..=n {
+        if i % 2 == 0 {
+            acc -= 1f64 / (i as f64);
+        }
+        else {
+            acc += 1f64 / (i as f64);
+        }
+    }
+
+    let formatted_value = format!("{:.1$}", acc, n);
+    println!("{formatted_value}");
+}
+```
+
+Ключевая строка позволяет указать формат (`{:.1$}`), значение (acc) и количество цифр после запятой (n):
+
+```rs
+let formatted_value = format!("{:.1$}", acc, n);
+```
