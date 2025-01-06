@@ -774,3 +774,23 @@ fn main() {
     println!("Вышли из внешнего цикла");
 }
 ```
+
+## Работа с датами
+
+Указываем зависимость кода от библиотеки chrono в файле "Cargo.toml":
+
+```toml
+[dependencies]
+chrono = "0.4"
+```
+
+Форматированный вывод даты похож на то, как он используется в Си:
+
+```rs
+use chrono::Local;
+
+fn main() {
+    let now = Local::now();
+    println!("Current date: {}", now.format("%Y-%m-%d"));
+}
+```
