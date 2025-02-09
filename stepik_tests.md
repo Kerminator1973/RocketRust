@@ -1551,3 +1551,66 @@ fn abs(num: f64) -> f64 {
 ```
 
 Функция abs() в моём решении не используется - она требуется по условиям решения задачи, но особого смысла в её использовании нет.
+
+## Задача "Нормализация массива"
+
+Причина по которой этот тест был добавлен состоит в том, что в нём возвращается массив, в нём есть перечисление (enumeration) вместо доступа к элементам массива по индексу:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> i32 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+fn main() {
+
+    let mut arr = [0i32; 20];
+    for i in 0..arr.len() {
+        arr[i] = read_input();
+    }
+
+    let result = norm_arr(arr);
+    print!("[");
+    for i in 0..result.len() - 1 {
+        print!("{:.2}, ", result[i])
+    }
+    print!("{:.2}]", result[result.len() - 1]);
+}
+
+fn norm_arr(array: [i32; 20]) -> [f64; 20] {
+
+    let mut output = [0f64; 20];
+    if let (Some(min_val), Some(max_val)) = (array.iter().min(), array.iter().max()) {
+        let diff = (max_val - min_val) as f64;
+
+        if diff == 0.0 {
+            return [0.0; 20];
+        }
+
+        for (i, &value) in array.iter().enumerate() {
+            output[i] = (value as f64 - *min_val as f64) / diff;
+        }
+
+    } else {
+        println!("The array is empty.");
+    }   
+
+    return output; 
+}
+```
+
+ChatGPT o4-mini также порекомендовал добавить ссылку на массив, чтобы избежать ненужно копирования массива. Однако я этого не сделал, по условиям задачи на Stepik-е:
+
+```rs
+fn norm_arr(array: &[i32; 20]) -> [f64; 20] {
+    // ...
+    for (i, &value) in array.iter().enumerate() {
+        output[i] = (value as f64 - min_val as f64) / diff;
+    }
+    // ...
+}
+```
