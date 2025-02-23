@@ -1644,3 +1644,161 @@ const PI: f64 = 3.1415926535;
 fn main() {
     // ...
 ```
+
+## Условно решённая задача "cos x и sin x"
+
+Решить задачу не удалось из-за расхождений в девятом знаке после запятой в части тестов. Да, моё решение не такое красивое, как у ChatGPT, но и вариант ChatGPT также не прошёл валидацию (его, кстати, пришлось пропатчить). Вот, на чём я остановился:
+
+```rs
+use std::io;
+
+// Чтобы приспособить код к новой задаче, следует поменять тип возвращаемого значения
+fn read_input() -> f64 {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to get input");
+    input.trim().parse().expect("Failure to parse")
+}
+
+const PI: f64 = 3.1415926535;
+
+fn main() {
+    let degrees = read_input();
+    let radians = calc_radians(degrees);
+
+    let s = sin(radians);
+    println!("sin({:.1}) = {:.9}", degrees, s);
+
+    let c = cos(radians);
+    println!("cos({:.1}) = {:.9}", degrees, c);
+}
+
+fn calc_radians(degrees: f64) -> f64 {
+    let radians = degrees * PI / 180.0;
+    radians
+}
+
+
+fn sin(x: f64) -> f64 {
+
+    let terms = 10;
+
+    let mut sum = 0.0;
+    let mut sign = 1.0;
+    let mut power = x; // x raised to (2k+1), starting with k=0 gives x^1
+
+    // factorial for (2k+1)!; starting with 1! for k=0
+    let mut factorial = 1.0;
+
+    for k in 0..terms {
+        // term = sign * (x^(2k+1))/( (2k+1)! )
+        let term = sign * power / factorial;
+        sum += term;
+
+        // Prepare for the next term:
+        // Update sign for the alternating series.
+        sign *= -1.0;
+
+        // Increase the power to x^(2k+3): multiply by x^2
+        power *= x * x;
+
+        // Increase the factorial to (2k+3)! from (2k+1)!:
+        // Multiply by (2k+2) and (2k+3)
+        factorial *= (2.0 * k as f64 + 2.0) * (2.0 * k as f64 + 3.0);
+    }
+
+    sum
+}
+
+/*
+fn sin(x: f64) -> f64 {
+    let mut acc = 0.0;
+    let mut sign = 1f64;
+    for i in (1..12).step_by(2) {
+        acc += sign * x.powi(i) / factorial(i as u32) as f64;
+        sign *= -1f64;
+    }
+    acc
+}
+*/
+
+fn cos(x: f64) -> f64 {
+
+    let terms = 10;
+
+    let mut sum = 0.0;
+    let mut sign = 1.0;
+    let mut power = 1.0;    // x^(2k), starting with k=0 gives x^0 = 1
+    let mut factorial = 1.0; // (2k)!, starting with 0! = 1
+
+    for k in 0..terms {
+        // Compute the k-th term: term = sign * (x^(2k))/( (2k)! )
+        let term = sign * power / factorial;
+        sum += term;
+
+        // Prepare for next term:
+        sign *= -1.0;  // Alternate sign
+
+        // Update power and factorial to represent x^(2(k+1)) and (2(k+1))!:
+        // Multiply power by x^2
+        power *= x * x;
+        // Multiply factorial by (2k+1) and (2k+2)
+        factorial *= (2.0 * k as f64 + 1.0) * (2.0 * k as f64 + 2.0);
+    }
+
+    sum
+}
+
+/*
+fn cos(x: f64) -> f64 {
+    let mut acc = 1.0;
+    let mut sign = -1f64;
+    for i in (2..=11).step_by(2) {
+        acc += sign * x.powi(i) / factorial(i as u32) as f64;
+        sign *= -1f64;
+    }
+    acc
+}
+
+fn factorial(n: u32) -> u32 {
+
+    if n == 0 {
+        return 1;
+    }
+
+    let mut acc = 1;
+    for i in 2..=n {
+        acc *= i;
+    }
+
+    acc
+}
+*/
+```
+
+Если в варианте ChatGPT установить количество элементов в ряде в 11, а не в 10, то остаётся только один не пройденный тест на Stepik-е:
+
+```rs
+fn cos(x: f64) -> f64 {
+    let terms = 11;
+```
+
+В действительности, проблема с тестом #9 состоит в том, что из-за округления мы получаем знак минут, перед, как бы, нулём:
+
+```output
+sin(180.0) = -0.000000000
+cos(180.0) = -1.000000000
+```
+
+И по этой причине, тест мы не проходим. Если добавить следующий ниже патч, то все тесты удаётся пройти:
+
+```rs
+let s = sin(radians);
+let mut result = format!("{:.9}", s);
+if result == "-0.000000000" {
+    result = "0.000000000".to_string();
+}
+
+println!("sin({:.1}) = {}", degrees, result);
+```
+
+Вместе с тем, теперь я знаю, как можно вычислять синус и косинус используя ряд Маклорена.
