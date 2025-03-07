@@ -1022,3 +1022,25 @@ let ref_a = &val_a;
 let ref_ref_a = &ref_a;
 let ref_ref_ref_a = &ref_ref_a;
 ```
+
+## Передать массив по ссылке
+
+Передать массив по ссылке в некоторую функцию можно следующим способом:
+
+```rs
+fn main() {
+
+    // Создание массива размером 1_000_000
+    let mut array = [0; 1_000_000];
+
+    // ...
+
+    calc_pos_neg(&mut array);
+}
+
+fn calc_pos_neg(arr: &mut [i32]) {
+    for i in 0..arr.len() {
+        //...
+    }
+}
+```
