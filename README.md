@@ -622,3 +622,9 @@ cargo install cbindgen
 ## Code covegare in Rust
 
 Рекомендуется для ознакомления автор - [Dotan Nahum](https://jondot.medium.com/). Начать исследование темы покрытия кода тестами можно со статьи [How to do code coverage in Rust](https://jondot.medium.com/how-to-do-code-coverage-in-rust-9548e0fbacce).
+
+## Инструменты для разработке на Rust
+
+JetBrains RustRover - запрещён к загрузке в Российской федерации.
+
+Бесплатная [облачная среда](https://play.rust-lang.org/?version=stable&mode=debug&edition=2024).
