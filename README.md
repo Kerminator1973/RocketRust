@@ -22,7 +22,7 @@ Rust используют такие компании, как VK, Twitter и Dro
 >
 >(По материалам конференции "Rust Nation OK 2025")
 
-Разработчики Ununtu в версии 25.10 планируют переписать основные утилиту (uutils project/coreutils) на Rust. Попробовать coreutils, написанные на Rust можно уже сейчас, используя проект [oxidizr](https://github.com/jnsgruk/oxidizr). Для некоторых утилит время выполнения сократилось в шесть раз!
+Разработчики Ununtu в версии 25.10 планируют переписать основные утилиты (uutils project/coreutils) на Rust. Попробовать coreutils, написанные на Rust можно уже сейчас, используя проект [oxidizr](https://github.com/jnsgruk/oxidizr). Для некоторых утилит время выполнения сократилось в шесть раз!
 
 В статье [Почему Big Tech тихонько уходит от Go](https://habr.com/ru/articles/905248/) by Debugged Thoughts, указывается на то, что:
 
