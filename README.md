@@ -673,3 +673,5 @@ cargo install cbindgen
 JetBrains RustRover - запрещён к загрузке в Российской федерации.
 
 Бесплатная [облачная среда](https://play.rust-lang.org/?version=stable&mode=debug&edition=2024).
+
+[Miri](https://github.com/rust-lang/miri) - инструмент для анализа поведения низкоуровневого кода для выявления _Undefined Behavior_.
