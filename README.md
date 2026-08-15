@@ -104,6 +104,8 @@ Rust используют такие компании, как VK, Twitter и Dro
 
 [Online tutorial](https://learning-rust.github.io/)
 
+[Язык программирования Rust](https://doc.rust-lang.ru/book/) by Стив Клабник и Кэрол Николс.
+
 ## Что характеризует Rust в большей степени
 
 1) Аскетичный, но очень мощный синтаксис.
